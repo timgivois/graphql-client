@@ -1,32 +1,29 @@
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
-
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Books from "./Books";
+import Book from "./Book";
 import "./App.css";
 
-const GET_BOOK = gql`
-  query GetBook($id: ID!) {
-    book(id: $id) {
-      title
-      published
-    }
-  }
-`;
-
-const GET_BOOKS = gql`
-  query GetBooks {
-    books {
-      title
-      published
-    }
-  }
-`;
-
 function App() {
-  const { loading, error, data } = useQuery(GET_BOOK, { variables: { id: 2 } });
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-  console.log(data);
-  return <div>{data.book.title}</div>;
+  return (
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/books" element={<Books />} />
+
+          <Route path="/book/:id" element={<Book />} />
+          <Route
+            path="/"
+            element={
+              <div>
+                <Link to="/books">Books</Link>
+              </div>
+            }
+          />
+        </Routes>
+      </Router>
+    </div>
+  );
 }
 
 export default App;
